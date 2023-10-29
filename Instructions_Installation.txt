@@ -1,0 +1,10 @@
+
+
+
+Connect to mongoose db:
+
+cd server
+
+npm install mongoose
+
+npm i --save-dev @types/mongoose
