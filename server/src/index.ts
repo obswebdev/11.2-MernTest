@@ -1,6 +1,9 @@
+import {config} from "dotenv";
+config();
 import express, {Request, Response} from "express";
 import mongoose from 'mongoose';
 import Deck from "./models/Deck";
+
 
 const PORT = 5000;
 
@@ -32,7 +35,8 @@ app.get("/hello", async (req: Request, res: Response) => {
 });
 
 mongoose.connect(
-    "mongodb+srv://ollyXX:xdcxx5kYmnjxmpH7@cluster0.ijd2qj8.mongodb.net/?retryWrites=true&w=majority"
+    // "mongodb+srv://ollyXX:xdcxx5kYmnjxmpH7@cluster0.ijd2qj8.mongodb.net/?retryWrites=true&w=majority"
+    process.env.MONGO_URL ?? ""
 ).then(()=> {
     console.log(`listening on port ${PORT}`);
     app.listen(PORT);
