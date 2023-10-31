@@ -1,7 +1,9 @@
 import {config} from "dotenv";
 config();
+
 import express, {Request, Response} from "express";
 import mongoose from 'mongoose';
+import cors from "cors";
 import Deck from "./models/Deck";
 
 
@@ -11,6 +13,25 @@ const app = express();
 
 // allows json post requests
 app.use(express.json());
+// allow bypass of requests when running locally
+app.use(
+    cors({
+        origin: "*"
+    })
+);
+
+
+app.get('/decks', async (req:Request, res:Response) => {
+    // fetch all decks and send back to the user
+    // how do we fetch the decks from mongo
+    // how do we send back the array to the UI
+    const decks = await Deck.find(
+        // {
+        //     title: "yaay"
+        // }
+    );
+    res.json(decks);
+})
 
 app.post("/decks", async (req: Request, res: Response) => {
     // res.send("hello world !!!");
