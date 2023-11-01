@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
+type TDeck = {
+  title:string;
+  _id:string; 
+}
+
 function App() {
   
   const [title, setTitle] = useState('');
-  const [decks, setDecks] = useState([]);
+  const [decks, setDecks] = useState<TDeck[]>([]);
 
   async function handleCreateDeck(e: React.FormEvent){
     e.preventDefault();
