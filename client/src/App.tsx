@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import {Outlet, Link} from "react-router-dom";
+import { deleteDeck } from './api/deleteDeck';
+import { getDecks, TDeck } from './api/getDecks';
+import { createDeck } from './api/createDeck';
 
 type TDeck = {
   title:string;
@@ -14,20 +17,8 @@ function App() {
 
   async function handleCreateDeck(e: React.FormEvent){
     e.preventDefault();
-    const response = await fetch('http://localhost:5000/decks', {
-      method: 'POST',
-      body: JSON.stringify({
-        title,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      }
-
-    });
-    const deck = await response.json();
-
+    const deck = await createDeck(title)
     // the thing below takes the original array and adds a new element to the end of the array - this means adds become automatic on the UI
-
     setDecks([...decks, deck]);
     setTitle("");
 
@@ -35,21 +26,14 @@ function App() {
 
   useEffect(()=> {
     async function fetchDecks(){
-      const response = await fetch("http://localhost:5000/decks");
-      const newDecks = await response.json();
+      const newDecks = await getDecks();
       setDecks(newDecks);
     };
     fetchDecks();
   }, [])
 
-  async function handleDeleteDeck(deckID: string){
-    await fetch(`http://localhost:5000/decks/${deckID}`, {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-    });
+  async function handleDeleteDeck(deckID: string){  
+    await deleteDeck(deckID);
     // refresh everything or update using available array
     setDecks(decks.filter(deck => deck._id !== deckID));
   }
