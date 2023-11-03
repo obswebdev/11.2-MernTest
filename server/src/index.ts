@@ -33,6 +33,21 @@ app.get('/decks', async (req:Request, res:Response) => {
     res.json(decks);
 })
 
+
+app.delete('/decks/:deckId', async (req: Request, res: Response) => {
+    // TODO
+    // 1. Get the deck id from the url
+    // 2. Delete the deck from Mongo
+    // 3. return the deleted deck to the user who made the request
+    
+    const deckId = req.params.deckId;
+
+    const deck = await Deck.findByIdAndDelete(deckId);
+
+    res.json(deck);
+
+})
+
 app.post("/decks", async (req: Request, res: Response) => {
     // res.send("hello world !!!");
     console.log(req.body);

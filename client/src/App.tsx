@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import {Outlet, Link} from "react-router-dom";
 
 type TDeck = {
   title:string;
@@ -13,7 +14,7 @@ function App() {
 
   async function handleCreateDeck(e: React.FormEvent){
     e.preventDefault();
-    await fetch('http://localhost:5000/decks', {
+    const response = await fetch('http://localhost:5000/decks', {
       method: 'POST',
       body: JSON.stringify({
         title,
@@ -23,7 +24,13 @@ function App() {
       }
 
     });
+    const deck = await response.json();
+
+    // the thing below takes the original array and adds a new element to the end of the array - this means adds become automatic on the UI
+
+    setDecks([...decks, deck]);
     setTitle("");
+
   }
 
   useEffect(()=> {
@@ -35,11 +42,27 @@ function App() {
     fetchDecks();
   }, [])
 
+  async function handleDeleteDeck(deckID: string){
+    await fetch(`http://localhost:5000/decks/${deckID}`, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    });
+    // refresh everything or update using available array
+    setDecks(decks.filter(deck => deck._id !== deckID));
+  }
+
   return <div className="App">
     <ul className="decks">
       {
         decks.map((deck) => (
-          <li key={deck._id}>{deck.title}</li>
+          <li key={deck._id}>
+            <button onClick={() => handleDeleteDeck(deck._id)}>X</button>
+            {deck.title}
+            <Link to={`decks/${deck._id}`}>{deck.title}</Link>
+          </li>
         ))
       }
     </ul>
