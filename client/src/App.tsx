@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import {Outlet, Link} from "react-router-dom";
+import { Link} from "react-router-dom";
 import { deleteDeck } from './api/deleteDeck';
 import { getDecks, TDeck } from './api/getDecks';
 import { createDeck } from './api/createDeck';
