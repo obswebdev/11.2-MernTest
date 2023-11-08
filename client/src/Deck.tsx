@@ -1,14 +1,15 @@
-import {  useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { createCard } from './api/createCard';
 import { useParams } from 'react-router-dom';
-import './App.css';
-import { getDecks, TDeck } from './api/getDecks';
+import './Deck.css';
+import { TDeck } from './api/getDecks';
 import { getSingleDeck } from './api/getSingleDeck';
+import { deleteCard } from './api/deleteCard';
 
 
 
 export default function DeckO() {
-    const [deck, setDeck] = useState<TDeck | undefined>();
+    const [deck, setSingleDeck] = useState<TDeck | undefined>();
     const [text, setText] = useState('');
     const {deckId} = useParams();
     const [cards, setCards] = useState<string[]>([]);
@@ -22,31 +23,32 @@ export default function DeckO() {
 
         setCards(serverCards);
         setText("");
+    };
+
+
+    useEffect(()=> { 
+        async function fetchDeck(){
+            if (!deckId) return;
+            const newDeck = await getSingleDeck(deckId);
+            setSingleDeck(newDeck);
+            console.log(deck, 'This is the set deck');
+            setCards(newDeck.cards);
+        };
+        fetchDeck();
+    }, [deckId]);
+
+    async function handleDeleteCard(index:number){  
+        if (!deckId) return;
+        const newDeck = await deleteCard(deckId, index);
+        setCards(newDeck.cards);
     }
 
-
-    // useEffect(()=> { 
-    //     async function fetchDeck(){
-    //         if (!deckId) return;
-    //         const newDeck = await getSingleDeck(deckId);
-    //         setDeck(newDeck);
-    //         setCards(newDeck.cards);
-    //     };
-    //     fetchDeck();
-    // }, [deckId]);
-
-    // async function handleDeleteDeck(deckID: string){  
-    // await deleteDeck(deckID);
-    // // refresh everything or update using available array
-    // setDecks(decks.filter(deck => deck._id !== deckID));
-    // }
-
-    return <div className="App">
-        <ul className="decks">
+    return <div className="Deck">
+        <ul className="cards">
             {
                 cards.map((card:string, index: number) => (
                 <li key={index}>
-                    {/* <button onClick={() => handleDeleteDeck(deck._id)}>X</button> */}
+                    <button onClick={() => handleDeleteCard(index)}>X</button>
                     {index}
                     {card}
                 </li>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { Link} from "react-router-dom";
 import { deleteDeck } from './api/deleteDeck';
-import { getDecks, TDeck } from './api/getDecks';
+import { getDecks } from './api/getDecks';
 import { createDeck } from './api/createDeck';
 
 type TDeck = {

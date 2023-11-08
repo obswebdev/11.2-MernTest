@@ -1,0 +1,15 @@
+.Header {
+    height: 80px;
+    background: greenyellow;
+
+}
+
+.Header .container{
+    width: 800px;
+    background: greenyellow;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    align-items: center;
+    height: 100%;
+}
