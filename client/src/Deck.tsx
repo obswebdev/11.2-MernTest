@@ -44,6 +44,7 @@ export default function DeckO() {
     }
 
     return <div className="Deck">
+        <h1>{deck?.title}</h1>
         <ul className="cards">
             {
                 cards.map((card:string, index: number) => (
